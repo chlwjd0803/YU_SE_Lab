@@ -1,0 +1,35 @@
+spring:
+  profiles:
+    active: dev
+
+  datasource:
+    # ??? ???? H2 ??
+    dev:
+      url: jdbc:h2:mem:immigrationdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+      driver-class-name: org.h2.Driver
+      username: sa
+      password:
+
+    # ??? MySQL ?? (?? ?? ?? ?? ????? ?? ??)
+    prod:
+      url: jdbc:mysql://localhost:3306/immigrationdb?useSSL=false&serverTimezone=Asia/Seoul
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: your_mysql_user
+      password: your_mysql_password
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    defer-datasource-initialization: true
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    sql:
+      init:
+        mode: always
+
+openai:
+  api:
+    key: ${OPENAI_API_KEY}  # ??? ????? OPENAI_API_KEY ?? ??
+    base-url: https://api.openai.com/v1

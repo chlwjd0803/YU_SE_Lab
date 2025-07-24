@@ -2,9 +2,192 @@
 <html>
 <head>
     <title>Todo List</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: auto; }
+        h1 { text-align: center; color: #333; }
+        form { background: #f4f4f4; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        form input[type="text"],
+        form input[type="date"],
+        form select { width: calc(100% - 22px); padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        form button { background: #5cb85c; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        form button:hover { background: #4cae4c; }
+        ul { list-style: none; padding: 0; }
+        li { background: #fff; padding: 15px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        li:last-child { border-bottom: none; }
+        .todo-title { flex-grow: 1; }
+        .todo-status { margin-left: 10px; font-weight: bold; }
+        .todo-deadline { font-size: 0.9em; color: #666; margin-left: 10px; }
+        .todo-actions button { background: #f0ad4e; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-left: 5px; }
+        .todo-actions button.delete { background: #d9534f; }
+        .todo-actions button:hover { opacity: 0.9; }
+    </style>
 </head>
 <body>
-    <h1>All Todos</h1>
-    <!-- Todo list will be rendered here -->
+    <div class="container">
+        <h1>All Todos</h1>
+
+        <form id="addTodoForm">
+            <input type="text" id="todoTitle" placeholder="할 일 제목" required>
+            <input type="date" id="todoDeadline">
+            <select id="todoCategory">
+                <!-- Categories will be loaded here dynamically -->
+                <option value="">카테고리 선택 (선택 사항)</option>
+            </select>
+            <label>
+                <input type="checkbox" id="todoFavorite"> 중요
+            </label>
+            <button type="submit">할 일 추가</button>
+        </form>
+
+        <ul id="todoList">
+            <!-- Todos will be rendered here -->
+        </ul>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addTodoForm = document.getElementById('addTodoForm');
+            const todoTitleInput = document.getElementById('todoTitle');
+            const todoDeadlineInput = document.getElementById('todoDeadline');
+            const todoCategorySelect = document.getElementById('todoCategory');
+            const todoFavoriteInput = document.getElementById('todoFavorite');
+            const todoList = document.getElementById('todoList');
+
+            // Function to fetch and display todos
+            async function fetchTodos() {
+                try {
+                    const response = await fetch('/api/todos/index');
+                    const todos = await response.json();
+                    todoList.innerHTML = ''; // Clear existing list
+                    todos.forEach(todo => {
+                        const listItem = document.createElement('li');
+                        listItem.innerHTML = `
+                            <span class="todo-title">${todo.title}</span>
+                            <span class="todo-deadline">${todo.deadline ? todo.deadline : ''}</span>
+                            <span class="todo-status">${todo.status}</span>
+                            <div class="todo-actions">
+                                <button data-id="${todo.id}" data-status="${todo.status}" class="toggle-status">${todo.status === '준비' ? '완료로 변경' : '준비로 변경'}</button>
+                                <button data-id="${todo.id}" class="delete">삭제</button>
+                            </div>
+                        `;
+                        todoList.appendChild(listItem);
+                    });
+                } catch (error) {
+                    console.error('Error fetching todos:', error);
+                }
+            }
+
+            // Function to fetch and display categories
+            async function fetchCategories() {
+                try {
+                    const response = await fetch('/api/todos/index/category');
+                    const categories = await response.json();
+                    todoCategorySelect.innerHTML = '<option value="">카테고리 선택 (선택 사항)</option>'; // Reset options
+                    categories.forEach(category => {
+                        const option = document.createElement('option');
+                        option.value = category.id;
+                        option.textContent = category.name;
+                        todoCategorySelect.appendChild(option);
+                    });
+                } catch (error) {
+                    console.error('Error fetching categories:', error);
+                }
+            }
+
+            // Add Todo Form Submission
+            addTodoForm.addEventListener('submit', async function(event) {
+                event.preventDefault(); // Prevent default form submission
+
+                const title = todoTitleInput.value;
+                const deadline = todoDeadlineInput.value;
+                const categoryId = todoCategorySelect.value || null; // Use null if no category selected
+                const favorite = todoFavoriteInput.checked;
+
+                const todoData = {
+                    title: title,
+                    deadline: deadline,
+                    categoryId: categoryId,
+                    favorite: favorite
+                };
+
+                try {
+                    const response = await fetch('/api/todos/index/task', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(todoData)
+                    });
+
+                    if (response.ok) {
+                        todoTitleInput.value = ''; // Clear input
+                        todoDeadlineInput.value = '';
+                        todoCategorySelect.value = '';
+                        todoFavoriteInput.checked = false;
+                        fetchTodos(); // Refresh the todo list
+                    } else {
+                        const errorData = await response.json();
+                        alert('할 일 추가 실패: ' + (errorData.message || response.statusText));
+                    }
+                } catch (error) {
+                    console.error('Error adding todo:', error);
+                    alert('할 일 추가 중 오류가 발생했습니다.');
+                }
+            });
+
+            // Initial fetch of todos and categories
+            fetchTodos();
+            fetchCategories();
+
+            // Event listener for toggling todo status (delegation)
+            todoList.addEventListener('click', async function(event) {
+                if (event.target.classList.contains('toggle-status')) {
+                    const todoId = event.target.dataset.id;
+                    const currentStatus = event.target.dataset.status;
+                    const newStatus = currentStatus === '준비' ? '완료' : '준비';
+
+                    try {
+                        const response = await fetch(`/api/todos/index/updateStatus/${todoId}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(newStatus) // Send as JSON string
+                        });
+
+                        if (response.ok) {
+                            fetchTodos(); // Refresh the list
+                        } else {
+                            const errorData = await response.json();
+                            alert('상태 변경 실패: ' + (errorData.message || response.statusText));
+                        }
+                    } catch (error) {
+                        console.error('Error toggling status:', error);
+                        alert('상태 변경 중 오류가 발생했습니다.');
+                    }
+                } else if (event.target.classList.contains('delete')) {
+                    const todoId = event.target.dataset.id;
+                    if (confirm('정말로 이 할 일을 삭제하시겠습니까?')) {
+                        try {
+                            const response = await fetch(`/api/todos/index/task/${todoId}`, {
+                                method: 'DELETE'
+                            });
+
+                            if (response.ok) {
+                                fetchTodos(); // Refresh the list
+                            } else {
+                                const errorData = await response.json();
+                                alert('할 일 삭제 실패: ' + (errorData.message || response.statusText));
+                            }
+                        } catch (error) {
+                            console.error('Error deleting todo:', error);
+                            alert('할 일 삭제 중 오류가 발생했습니다.');
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>

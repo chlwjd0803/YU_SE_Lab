@@ -3,91 +3,51 @@
 <head>
     <title>My Page</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-        }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
-            margin: auto;
-        }
-        h1, h2 {
-            color: #333;
-        }
-        .progress-section, .rank-section {
-            margin-bottom: 20px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .progress-bar-container {
-            width: 100%;
-            background-color: #e0e0e0;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-        .progress-bar {
-            width: {{myPageInfo.progress}}%;
-            height: 25px;
-            background-color: #4CAF50;
-            text-align: center;
-            line-height: 25px;
-            color: white;
-            border-radius: 5px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: auto; }
+        h1 { text-align: center; color: #333; }
+        .section { background: #f4f4f4; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .section h2 { color: #555; margin-top: 0; }
+        .progress-bar { width: 100%; background-color: #e0e0e0; border-radius: 5px; }
+        .progress-bar-fill { height: 20px; background-color: #4CAF50; border-radius: 5px; text-align: center; line-height: 20px; color: white; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #e0e0e0; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>My Page</h1>
 
-        <div class="progress-section">
-            <h2>My Progress</h2>
-            <p>Your current progress: <strong>{{myPageInfo.progress}}%</strong></p>
-            <div class="progress-bar-container">
-                <div class="progress-bar">{{myPageInfo.progress}}%</div>
+        <div class="section">
+            <h2>나의 할 일 진행률</h2>
+            <p>총 할 일 중 {{myPageInfo.progress}}% 완료</p>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" style="width: {{myPageInfo.progress}}%;">{{myPageInfo.progress}}%</div>
             </div>
         </div>
 
-        <div class="rank-section">
-            <h2>My Rank</h2>
-            <p>Your rank: <strong>{{myPageInfo.myRank}}</strong></p>
+        <div class="section">
+            <h2>나의 랭킹</h2>
+            <p>현재 나의 랭킹: {{myPageInfo.myRank}}위</p>
         </div>
 
-        <div class="rank-section">
-            <h2>Top 10 Users</h2>
+        <div class="section">
+            <h2>상위 10명 사용자 랭킹</h2>
             <table>
                 <thead>
                     <tr>
-                        <th>Rank</th>
-                        <th>Username</th>
-                        <th>Progress</th>
+                        <th>순위</th>
+                        <th>사용자 이름</th>
+                        <th>완료된 할 일 수</th>
                     </tr>
                 </thead>
                 <tbody>
                     {{#myPageInfo.top10Users}}
                     <tr>
-                        <td>{{@index}}</td>
+                        <td>{{rank}}</td>
                         <td>{{username}}</td>
-                        <td>{{progress}}%</td>
+                        <td>{{completedTodos}}</td>
                     </tr>
                     {{/myPageInfo.top10Users}}
                 </tbody>

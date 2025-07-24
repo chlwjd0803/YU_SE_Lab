@@ -1,11 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Todo List</title>
+    <title>Welcome to Todo App</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; display: flex; justify-content: center; align-items: center; min-height: 80vh; background-color: #f4f4f4; }
+        .start-container { background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; }
+        h1 { color: #333; margin-bottom: 30px; }
+        .button-group a { display: inline-block; background: #007bff; color: white; padding: 12px 25px; border-radius: 5px; text-decoration: none; margin: 10px; font-size: 18px; }
+        .button-group a:hover { background: #0056b3; }
+        .button-group a.signup { background: #28a745; }
+        .button-group a.signup:hover { background: #218838; }
+    </style>
 </head>
 <body>
-    <h1>Welcome to Todo List</h1>
-    <a href="/todos/login">Login</a>
-    <a href="/todos/signup">Signup</a>
+    <div class="start-container">
+        <h1>Welcome to Todo App!</h1>
+        <div class="button-group">
+            <a href="/todos/login">로그인</a>
+            <a href="/todos/signup" class="signup">회원가입</a>
+        </div>
+    </div>
 </body>
 </html>
