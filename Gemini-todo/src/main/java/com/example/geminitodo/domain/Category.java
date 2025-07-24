@@ -27,4 +27,8 @@ public class Category {
         this.name = name;
         this.webUser = webUser;
     }
+
+    public void updateName(String name) {
+        this.name = name;
+    }
 }

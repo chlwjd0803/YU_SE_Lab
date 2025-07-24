@@ -1,9 +1,8 @@
-package com.example.geminitodo.controller;
-
 import com.example.geminitodo.dto.CategoryDto;
 import com.example.geminitodo.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -14,14 +13,13 @@ import org.springframework.web.bind.annotation.*;
 public class CategoryApiController {
     private final CategoryService categoryService;
 
-    private Long getUserId(UserDetails userDetails) {
-        // 실제 구현에서는 UserDetails에서 ID를 가져오는 로직 필요
-        return 1L; // 임시 ID
+    private Long getUserId() {
+        return (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     @PostMapping("/category")
-    public ResponseEntity<?> addCategory(@RequestBody CategoryDto dto, @AuthenticationPrincipal UserDetails userDetails) {
-        return ResponseEntity.ok(categoryService.addCategory(getUserId(userDetails), dto));
+    public ResponseEntity<?> addCategory(@RequestBody CategoryDto dto) {
+        return ResponseEntity.ok(categoryService.addCategory(getUserId(), dto));
     }
 
     @PatchMapping("/category/{id}")
@@ -36,8 +34,13 @@ public class CategoryApiController {
     }
 
     @DeleteMapping("/category")
-    public ResponseEntity<?> deleteAllCategories(@AuthenticationPrincipal UserDetails userDetails) {
-        categoryService.deleteAllCategories(getUserId(userDetails));
+    public ResponseEntity<?> deleteAllCategories() {
+        categoryService.deleteAllCategories(getUserId());
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/category")
+    public ResponseEntity<?> getCategories() {
+        return ResponseEntity.ok(categoryService.getCategories(getUserId()));
     }
 }

@@ -160,3 +160,55 @@
 -   `src/main/resources/application.properties`
     -   `spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect` 설정 추가.
     -   데이터베이스 연결 정보 (username, password)를 애플리케이션 전용 사용자로 변경.
+
+## 4차 구현 (2025-07-24)
+
+### 1. CategoryService 상세 구현
+
+-   `CategoryService.java`
+    -   `editCategory(Long id, CategoryDto dto)`: `Category` 엔티티의 `updateName` 메서드를 사용하도록 수정.
+    -   `getCategories(Long userId)`: 사용자별 카테고리 목록 조회 메서드 추가.
+
+### 2. Category 엔티티 업데이트
+
+-   `Category.java`
+    -   `updateName(String name)`: 카테고리 이름 업데이트 메서드 추가.
+
+### 3. CategoryApiController 구현 완료
+
+-   `CategoryApiController.java`
+    -   `getUserId()`: `SecurityContextHolder.getContext().getAuthentication().getPrincipal()`을 사용하여 사용자 ID를 가져오도록 수정.
+    -   `addCategory`, `editCategory`, `deleteCategory`, `deleteAllCategories` 메서드에서 `getUserId()`를 사용하도록 수정.
+    -   `getCategories()`: 사용자별 카테고리 목록 조회 API 엔드포인트 추가.
+
+### 4. TodoService 카테고리 처리 로직 최종 확인
+
+-   `TodoService.java`
+    -   `addTask` 및 `editTask` 메서드의 카테고리 처리 로직이 명세서에 따라 올바르게 구현되었음을 확인.
+
+## 5차 구현 (2025-07-24)
+
+### 1. TodoApiController 최종 확인 및 수정
+
+-   `TodoApiController.java`
+    -   `getUserId()`: `UserDetails` 파라미터를 제거하고 `SecurityContextHolder.getContext().getAuthentication().getPrincipal()`을 직접 사용하도록 수정.
+    -   `addTodayTask`: `TodoDto`의 `deadline`을 `LocalDate.now()`로 설정하도록 추가.
+
+### 2. TodoService 최종 확인
+
+-   `TodoService.java`
+    -   `getTodayTasks`, `getFavoriteTasks` 메서드의 로직이 올바르게 구현되었음을 확인.
+    -   `addTask` 메서드에서 `TodoDto`의 `deadline` 및 `favorite` 필드 처리 로직이 올바르게 구현되었음을 확인.
+
+## 6차 구현 (2025-07-24)
+
+### 1. WebUserApiController 및 WebUserService 최종 확인
+
+-   `WebUserApiController.java`
+    -   `signup`, `login`, `logout` 엔드포인트가 명세서에 따라 올바른 응답 및 오류 처리를 하는지 확인.
+-   `WebUserService.java`
+    -   `signup`, `login`, `logout` 메서드가 명세서에 따라 올바르게 동작하는지 확인.
+
+### 2. 전반적인 오류 처리 확인
+
+-   각 API 컨트롤러에서 발생하는 예외가 적절히 처리되고, 명세서에 명시된 HTTP 상태 코드와 응답 메시지를 반환하는지 확인.

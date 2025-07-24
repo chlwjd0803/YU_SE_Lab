@@ -32,7 +32,7 @@ public class CategoryService {
     @Transactional
     public CategoryDto editCategory(Long id, CategoryDto dto) {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("카테고리를 찾을 수 없습니다."));
-        // category.setName(dto.getName());
+        category.updateName(dto.getName());
         return dto;
     }
 
@@ -49,5 +49,9 @@ public class CategoryService {
             todoRepository.findByCategoryId(category.getId()).forEach(todo -> todoRepository.deleteById(todo.getId()));
             categoryRepository.deleteById(category.getId());
         });
+    }
+
+    public List<Category> getCategories(Long userId) {
+        return categoryRepository.findByWebUserId(userId);
     }
 }
