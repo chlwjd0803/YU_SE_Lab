@@ -16,14 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class WebUserApiController {
     private final WebUserService webUserService;
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody WebUserDto dto) {
-        try {
-            return ResponseEntity.ok(webUserService.signup(dto));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+    
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody WebUserDto dto) {
