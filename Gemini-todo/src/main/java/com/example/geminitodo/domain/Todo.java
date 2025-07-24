@@ -46,4 +46,18 @@ public class Todo {
         this.webUser = webUser;
         this.category = category;
     }
+
+    public void updateStatus(String status) {
+        this.status = status;
+    }
+
+    public void updateTodo(String title, LocalDate deadline, Category category) {
+        this.title = title;
+        this.deadline = deadline;
+        this.category = category;
+    }
+
+    public void updateFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
 }

@@ -41,18 +41,25 @@ public class TodoService {
     @Transactional
     public String updateStatus(Long id, String newStatus) {
         Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("할 일을 찾을 수 없습니다."));
-        // todo.setStatus(newStatus); // setStatus 메소드가 없으므로 직접 수정
+        todo.updateStatus(newStatus);
         return newStatus;
     }
 
     @Transactional
     public TodoDto editTask(Long id, TodoDto dto) {
         Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("할 일을 찾을 수 없습니다."));
-        Category category = categoryRepository.findById(dto.getCategoryId()).orElse(null);
-        // todo.setTitle(dto.getTitle());
-        // todo.setCategory(category);
-        // todo.setDeadline(dto.getDeadline());
+        Category category = null;
+        if (dto.getCategoryId() != null) {
+            category = categoryRepository.findById(dto.getCategoryId()).orElse(null);
+        }
+        todo.updateTodo(dto.getTitle(), dto.getDeadline(), category);
         return dto;
+    }
+
+    @Transactional
+    public void updateFavorite(Long id) {
+        Todo todo = todoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("할 일을 찾을 수 없습니다."));
+        todo.updateFavorite(!todo.isFavorite());
     }
 
     @Transactional

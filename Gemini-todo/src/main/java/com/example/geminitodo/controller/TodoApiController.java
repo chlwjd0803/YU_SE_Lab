@@ -5,6 +5,7 @@ import com.example.geminitodo.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +16,7 @@ public class TodoApiController {
     private final TodoService todoService;
 
     private Long getUserId(UserDetails userDetails) {
-        // 실제 구현에서는 UserDetails에서 ID를 가져오는 로직 필요
-        return 1L; // 임시 ID
+        return (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     @GetMapping("/index")
@@ -47,7 +47,7 @@ public class TodoApiController {
 
     @PatchMapping("/updateFavorite/{id}")
     public ResponseEntity<?> updateFavorite(@PathVariable Long id) {
-        // todoService.updateFavorite(id) 구현 필요
+        todoService.updateFavorite(id);
         return ResponseEntity.ok().build();
     }
 

@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
+    List<Todo> findByWebUserId(Long userId);
     List<Todo> findByWebUserIdAndStatus(Long userId, String status);
     List<Todo> findByWebUserIdAndDeadlineAndStatus(Long userId, LocalDate deadline, String status);
     List<Todo> findByWebUserIdAndFavoriteAndStatus(Long userId, boolean favorite, String status);

@@ -109,3 +109,54 @@
     -   `favorite.mustache`
     -   `schedule.mustache`
     -   `mypage.mustache`
+
+## 3차 구현 (2025-07-24)
+
+### 1. MyPageService 구현 완료
+
+-   `MyPageService.java`
+    -   `getMyPageInfo(Long userId)`: 현재 사용자의 할 일 진행률 계산 및 전체 사용자 랭킹 (상위 10명) 조회 기능 구현 완료.
+-   `TodoRepository.java`
+    -   `findByWebUserId(Long userId)` 메서드 추가.
+
+### 2. Todo 엔티티 업데이트
+
+-   `Todo.java`
+    -   `updateStatus(String status)`: 할 일 상태 업데이트 메서드 추가.
+    -   `updateTodo(String title, LocalDate deadline, Category category)`: 할 일 정보 업데이트 메서드 추가.
+    -   `updateFavorite(boolean favorite)`: 할 일 중요도 업데이트 메서드 추가.
+
+### 3. TodoService 업데이트
+
+-   `TodoService.java`
+    -   `updateStatus(Long id, String newStatus)`: `Todo` 엔티티의 `updateStatus` 메서드를 사용하도록 수정.
+    -   `editTask(Long id, TodoDto dto)`: `Todo` 엔티티의 `updateTodo` 메서드를 사용하도록 수정.
+    -   `updateFavorite(Long id)`: `Todo` 엔티티의 `updateFavorite` 메서드를 사용하도록 추가 및 수정.
+
+### 4. TodoApiController 업데이트
+
+-   `TodoApiController.java`
+    -   `getUserId(UserDetails userDetails)`: `SecurityContextHolder.getContext().getAuthentication().getPrincipal()`을 사용하여 실제 사용자 ID를 가져오도록 수정.
+    -   `updateFavorite(Long id)`: `todoService.updateFavorite(id)`를 호출하도록 수정.
+
+### 5. TodoController 업데이트
+
+-   `TodoController.java`
+    -   `/mypage` 라우팅에서 `MyPageService.getMyPageInfo()`를 호출하여 `MyPageDto`를 모델에 추가하도록 수정.
+    -   `SecurityContextHolder.getContext().getAuthentication().getPrincipal()`을 사용하여 사용자 ID를 가져오도록 수정.
+
+### 6. View (mypage.mustache) 업데이트
+
+-   `src/main/resources/templates/todos/mypage.mustache`
+    -   `MyPageDto`의 `progress`, `myRank`, `top10Users` 정보를 표시하도록 템플릿 수정.
+
+### 7. JWT 인증 필터 업데이트
+
+-   `JwtAuthenticationFilter.java`
+    -   `UsernamePasswordAuthenticationToken` 생성 시 `principal`을 `JwtUtil`에서 추출한 `userId`로 설정하도록 수정.
+
+### 8. 데이터베이스 설정 업데이트
+
+-   `src/main/resources/application.properties`
+    -   `spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect` 설정 추가.
+    -   데이터베이스 연결 정보 (username, password)를 애플리케이션 전용 사용자로 변경.
