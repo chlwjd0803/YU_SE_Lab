@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
+@Entity(name = "PostV1")
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

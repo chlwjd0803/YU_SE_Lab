@@ -1,6 +1,5 @@
 package com.example.dtomappingbenchmark.v2.dto;
 
-import com.example.dtomappingbenchmark.v1.entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,13 +14,4 @@ public class PostDto {
     private String title;
     private String content;
     private Long userId;
-
-    public Post toEntity(){
-        return Post.builder()
-                .id(this.id)
-                .title(this.title)
-                .content(this.content)
-                .user(null)
-                .build();
-    }
 }

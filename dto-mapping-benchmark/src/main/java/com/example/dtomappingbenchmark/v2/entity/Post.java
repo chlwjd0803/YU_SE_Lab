@@ -1,6 +1,5 @@
 package com.example.dtomappingbenchmark.v2.entity;
 
-import com.example.dtomappingbenchmark.v1.dto.PostDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
+@Entity(name = "PostV2")
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,13 +23,4 @@ public class Post {
 
     @ManyToOne(fetch = FetchType.LAZY) // 지연 로딩을 이용하기 위해
     private User user;
-
-    public PostDto toDto(){
-        return PostDto.builder()
-                .id(this.id)
-                .title(this.title)
-                .content(this.content)
-                .userId(user.getId())
-                .build();
-    }
 }
