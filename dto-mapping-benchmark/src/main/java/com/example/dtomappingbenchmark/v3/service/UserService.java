@@ -4,7 +4,6 @@ import com.example.dtomappingbenchmark.v3.entity.User;
 import com.example.dtomappingbenchmark.v3.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -16,7 +15,6 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    @Transactional(readOnly = true)
     public User get(Long id) {
         return userRepository.findById(id).orElseThrow();
     }
