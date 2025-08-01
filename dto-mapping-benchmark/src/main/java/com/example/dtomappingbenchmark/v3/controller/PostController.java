@@ -22,20 +22,10 @@ public class PostController {
     @PostMapping
     public ResponseEntity<PostDto> create(@RequestBody PostDto dto) {
         User user = userService.get(dto.getUserId()); // 유저 엔티티 조회
-        Post post = Post.builder()
-                .title(dto.getTitle())
-                .content(dto.getContent())
-                .user(user)
-                .build();
+        Post post = toEntity(dto, user);
 
         Post saved = postService.create(post);
-        PostDto result = PostDto.builder()
-                .id(saved.getId())
-                .title(saved.getTitle())
-                .content(saved.getContent())
-                .userId(saved.getUser().getId())
-                .build();
-
+        PostDto result = toDto(saved);
         return ResponseEntity.ok(result);
     }
 
@@ -45,6 +35,14 @@ public class PostController {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .userId(post.getUser().getId())
+                .build();
+    }
+
+    Post toEntity(PostDto dto, User user){
+        return Post.builder()
+                .title(dto.getTitle())
+                .content(dto.getContent())
+                .user(user)
                 .build();
     }
 }

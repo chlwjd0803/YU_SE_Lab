@@ -19,11 +19,7 @@ public class PostService {
 
     public PostDto create(PostDto dto) {
         User user = userRepository.findById(dto.getUserId()).orElseThrow();
-        Post post = Post.builder()
-                .title(dto.getTitle())
-                .content(dto.getContent())
-                .user(user)
-                .build();
+        Post post = toEntity(dto, user);
         return toDto(postRepository.save(post));
     }
 
@@ -35,4 +31,13 @@ public class PostService {
                 .userId(post.getUser().getId())
                 .build();
     }
+
+    Post toEntity(PostDto dto, User user){
+        return Post.builder()
+                .title(dto.getTitle())
+                .content(dto.getContent())
+                .user(user)
+                .build();
+    }
+
 }

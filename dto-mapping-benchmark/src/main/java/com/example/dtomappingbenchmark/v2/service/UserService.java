@@ -16,7 +16,7 @@ public class UserService {
     private final PostService postService;
 
     public UserDto create(UserDto dto) {
-        User user = User.builder().name(dto.getName()).email(dto.getEmail()).posts(new ArrayList<>()).build();
+        User user = toEntity(dto);
         return toDto(userRepository.save(user));
     }
 
@@ -35,6 +35,14 @@ public class UserService {
                 .postList(user.getPosts().stream()
                         .map(postService::toDto)
                         .toList())
+                .build();
+    }
+
+    public User toEntity(UserDto dto){
+        return User.builder()
+                .name(dto.getName())
+                .email(dto.getEmail())
+                .posts(new ArrayList<>())
                 .build();
     }
 }
