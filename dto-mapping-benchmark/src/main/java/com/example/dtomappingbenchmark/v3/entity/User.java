@@ -25,6 +25,6 @@ public class User {
     private String email;
 
     // User가 Post의 생명주기까지 통제하겠다. 이거 유용하게 사용할 수 있어보임
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Post> posts = new ArrayList<>();
 }
