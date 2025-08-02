@@ -6,12 +6,14 @@ import com.example.dtomappingbenchmark.v3.entity.Post;
 import com.example.dtomappingbenchmark.v3.entity.User;
 import com.example.dtomappingbenchmark.v3.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v3/posts")
@@ -21,11 +23,14 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<PostDto> create(@RequestBody PostDto dto) {
+        long start = System.nanoTime();
         User user = userService.get(dto.getUserId()); // 유저 엔티티 조회
         Post post = toEntity(dto, user);
 
         Post saved = postService.create(post);
         PostDto result = toDto(saved);
+        long end = System.nanoTime();
+        log.info("v3 게시글 생성 : {}ns", end - start);
         return ResponseEntity.ok(result);
     }
 

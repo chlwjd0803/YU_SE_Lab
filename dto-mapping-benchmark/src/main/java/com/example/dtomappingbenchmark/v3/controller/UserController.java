@@ -3,6 +3,7 @@ package com.example.dtomappingbenchmark.v3.controller;
 import com.example.dtomappingbenchmark.v3.dto.PostDto;
 import com.example.dtomappingbenchmark.v3.entity.Post;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import com.example.dtomappingbenchmark.v3.service.UserService;
 import java.net.URI;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v3/users")
@@ -23,17 +25,22 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserDto> create(@RequestBody UserDto dto) {
+        long start = System.nanoTime();
         User user = toEntity(dto);
-        User saved = userService.create(user);
-        return ResponseEntity.created(URI.create("/api/v3/users/" + saved.getId()))
-                .body(toDto(saved));
+        UserDto saved = toDto(userService.create(user));
+        long end = System.nanoTime();
+        log.info("v3 유저 생성 : {}ns", end - start);
+        return ResponseEntity.ok(saved);
     }
 
     @Transactional(readOnly = true)
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> get(@PathVariable Long id) {
-        User user = userService.get(id);
-        return ResponseEntity.ok(toDto(user));
+        long start = System.nanoTime();
+        UserDto userDto = toDto(userService.get(id));
+        long end = System.nanoTime();
+        log.info("v3 유저 조회 : {}ns", end - start);
+        return ResponseEntity.ok(userDto);
     }
 
     private User toEntity(UserDto dto) {
