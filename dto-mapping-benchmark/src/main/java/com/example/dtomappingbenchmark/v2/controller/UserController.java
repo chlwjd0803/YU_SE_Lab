@@ -26,10 +26,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable Long id){
-        long start = System.nanoTime();
         UserDto result = userService.get(id);
-        long end = System.nanoTime();
-        log.info("v2 유저 조회 : {}ns", end - start);
         return ResponseEntity.ok(result);
     }
 }

@@ -15,7 +15,6 @@ import com.example.dtomappingbenchmark.v3.service.UserService;
 import java.net.URI;
 import java.util.stream.Collectors;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v3/users")
@@ -25,21 +24,15 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserDto> create(@RequestBody UserDto dto) {
-        long start = System.nanoTime();
         User user = toEntity(dto);
         UserDto saved = toDto(userService.create(user));
-        long end = System.nanoTime();
-        log.info("v3 유저 생성 : {}ns", end - start);
         return ResponseEntity.ok(saved);
     }
 
     @Transactional(readOnly = true)
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> get(@PathVariable Long id) {
-        long start = System.nanoTime();
         UserDto userDto = toDto(userService.get(id));
-        long end = System.nanoTime();
-        log.info("v3 유저 조회 : {}ns", end - start);
         return ResponseEntity.ok(userDto);
     }
 

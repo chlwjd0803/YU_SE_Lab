@@ -19,10 +19,7 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody PostDto dto){
-        long start = System.nanoTime();
         PostDto result = postService.create(dto);
-        long end = System.nanoTime();
-        log.info("v1 게시글 생성 : {}ms", end - start);
         return ResponseEntity.ok(result);
     }
 }
