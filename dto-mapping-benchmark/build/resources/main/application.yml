@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop  # ?? ???? create-drop ? ??? update? none?? ??? ?
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: false
+    open-in-view: false
+
+  devtools:
+    restart:
+      enabled: true
+
+logging:
+  level:
+    com.zaxxer.hikari.HikariConfig: WARN
+    com.zaxxer.hikari: WARN
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+# p6spy ?? (?? ?? ???)
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
