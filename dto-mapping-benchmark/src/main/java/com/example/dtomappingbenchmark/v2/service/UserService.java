@@ -6,6 +6,7 @@ import com.example.dtomappingbenchmark.v2.entity.User;
 import com.example.dtomappingbenchmark.v2.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
@@ -20,13 +21,12 @@ public class UserService {
         return toDto(userRepository.save(user));
     }
 
+    @Transactional(readOnly = true)
     public UserDto get(Long id) {
         User user = userRepository.findById(id).orElseThrow();
         return toDto(user);
     }
 
-    // 영속성 컨텍스트가 닫히는 오류 발생
-    // 반드시 @EntityGraph나 JOIN FETCH 같은 명시적 fetch 전략이 필요해. (중요 포인트)
     private UserDto toDto(User user) {
         return UserDto.builder()
                 .id(user.getId())

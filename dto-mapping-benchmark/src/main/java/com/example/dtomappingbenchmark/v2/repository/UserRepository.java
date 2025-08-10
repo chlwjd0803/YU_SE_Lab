@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository("userRepositoryV2")
 public interface UserRepository extends JpaRepository <User, Long>{
-    @EntityGraph(attributePaths = "posts") // ← 여기가 핵심
+//    @EntityGraph(attributePaths = "posts") // ← 여기가 핵심
     Optional<User> findById(Long id);
 }
