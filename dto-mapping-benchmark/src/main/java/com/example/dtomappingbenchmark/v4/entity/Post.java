@@ -21,6 +21,6 @@ public class Post {
     @Column
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 }

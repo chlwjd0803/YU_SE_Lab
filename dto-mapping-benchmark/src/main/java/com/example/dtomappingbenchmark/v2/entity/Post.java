@@ -21,6 +21,6 @@ public class Post {
     @Column
     private String content;
 
-    @ManyToOne // 지연 로딩을 이용하기 위해
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 }
