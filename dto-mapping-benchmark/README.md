@@ -12,9 +12,7 @@
 
 ## 실험 동기부여
 
-![image.png](attachment:4fd1c1b4-2a5a-412f-866a-25e3d6a12517:image.png)
-
-### **1. 시작점: 실제 프로젝트 코드 리뷰**
+### **[1. 시작점: 실제 프로젝트 코드 리뷰](https://github.com/Likelion-YeungNam-Univ/CoCoNut-was/pull/8)**
 
 - '멋쟁이 사자처럼 대학 해커톤' 프로젝트 진행 중, **JPA 연관관계 설정**에 대한 코드 리뷰를 받음.
 - 당시 `@ManyToOne`에 기본 전략인 **`EAGER`를 사용한 코드**에 대해, 성능 저하를 유발할 수 있으니 **`LAZY` 로딩을 적용하라는 피드백**이 있었음.
@@ -108,48 +106,7 @@
 - **비교 조건 불일치**: 각 소스코드(v1, v2 등)에 동일한 환경 조건을 적용하지 않아 정확한 비교가 어려웠음.
     - **`v2` 소스코드의 `EntityGraph` 오용**: **`v2`** 코드에만 **`EntityGraph`*를 잘못 적용하여 **N+1 문제**를 유발.
 
-- V1
-    
-    F.
-    
-    ![image.png](attachment:0a9ac5e6-e2a9-4161-8426-663bd17a7794:image.png)
-    
-    G.
-    
-    ![image.png](attachment:d3074dbf-f2f0-44af-88a5-146b3dd9f396:image.png)
-    
-- V2
-    
-    F.
-    
-    ![image.png](attachment:ee91025b-003f-45b2-ba19-97b67148fcf1:image.png)
-    
-    G.
-    
-    ![image.png](attachment:ad706371-9786-4207-b224-62f2fa70d63a:image.png)
-    
-- V3
-    
-    F.
-    
-    ![image.png](attachment:ac763e92-c45c-422a-8bcb-edec62f593dc:image.png)
-    
-    G.
-    
-    ![image.png](attachment:09e96da2-6c97-4c93-938f-940b8f0f028d:image.png)
-    
-    ---
-    
-- V4
-    
-    F.
-    
-    ![image.png](attachment:cf25eeb1-c492-49da-805f-f1f4d37c10b7:image.png)
-    
-    G.
-    
-    ![image.png](attachment:3bec86c4-bc96-47ee-b23e-15b352cb8660:image.png)
-    
+
 
 ---
 
@@ -199,31 +156,9 @@
 | v2 (서비스 계층) | 13 (28.23) | 121 (2.48) |
 | v3 (컨트롤러 계층) | 12 (28.07) | 122 (2.57) |
 | v4 (매퍼 클래스) | 13(28.21) | 206 (4.22) |
-- v1 L
-    
-    ![image.png](attachment:eeaf7651-bb7f-48ab-be31-72b3a4afc392:image.png)
-    
-    ![image.png](attachment:40963c41-e4b1-4820-88ca-c430757e943c:image.png)
-    
-- v2 L
-    
-    ![image.png](attachment:783c7f3a-f6bb-418e-a2d3-d7f5c6821476:image.png)
-    
-    ![image.png](attachment:31c6c1de-e0fe-413d-b7c9-cc02033e5447:image.png)
-    
-- v3 L
-    
-    ![image.png](attachment:f2da14cf-4b85-4b39-9f1f-6b7f9a39ff97:image.png)
-    
-    ![image.png](attachment:4816f373-c829-4e6a-b607-09858ed52131:image.png)
-    
-- v4 L
-    
-    ![image.png](attachment:b5647e43-0ce4-4d56-8e6b-00682529096f:image.png)
-    
-    ![image.png](attachment:0bd94083-f1c0-4c2e-85e8-bd581f95199c:image.png)
-    
 
+
+    
 ## 📊 실험 결과 요약 - EAGER 강제
 
 | 평균 응답 시간 ms 
@@ -233,29 +168,7 @@
 | v2 (서비스 계층) | 64 (48.38) | 165 (3.50) |
 | v3 (컨트롤러 계층) | 65 (48.49) | 158 (3.44) |
 | v4 (매퍼 클래스) | 61 (47.56) | 145 (3.12) |
-- v1 E
-    
-    ![image.png](attachment:d4bda367-2d0e-417b-9970-69a606e723b7:image.png)
-    
-    ![image.png](attachment:9a26c06f-8690-4f7b-b332-1116a5363ad5:image.png)
-    
-- v2 E
-    
-    ![image.png](attachment:22849ba5-1355-4d6b-a1c4-74be3dab4827:image.png)
-    
-    ![image.png](attachment:bcdf7d0e-2f23-4c1a-b0c2-d7ee3fb9060a:image.png)
-    
-- v3 E
-    
-    ![image.png](attachment:169b41a0-ae0d-4c0d-a3cc-2ab79f3ae70a:image.png)
-    
-    ![image.png](attachment:180e477b-4ec4-449b-99ea-17a611b84666:image.png)
-    
-- v4 E
-    
-    ![image.png](attachment:3ce8f6e7-4293-4c7a-aae6-4529cf045f08:image.png)
-    
-    ![image.png](attachment:19b58705-df47-4680-8a27-d00118b8c4a7:image.png)
+
     
 
 ## 📊 실험 결과 요약 - 기본 설정
@@ -267,28 +180,7 @@
 | v2 (서비스 계층) | 14 (29.37) | 163 (3.40) |
 | v3 (컨트롤러 계층) | 12 (28.50) | 166 (3.40) |
 | v4 (매퍼 클래스) | 13 (28.52) | 202 (4.19) |
-- v1
-    
-    ![image.png](attachment:7033aec4-4584-4716-91ee-b6af53a28b55:image.png)
-    
-    ![image.png](attachment:e4268cca-8fe0-49e0-ac2c-17af56b47a1c:image.png)
-    
-- v2
-    
-    
-    ![image.png](attachment:30ebd14c-42d8-4060-8cbe-28febb038215:image.png)
-    
-- v3
-    
-    ![image.png](attachment:3d196355-3334-4396-bb2c-5692b3c2b464:image.png)
-    
-    ![image.png](attachment:551ae7c0-d460-430c-93a2-f5ceb9a40bfc:image.png)
-    
-- v4
-    
-    ![image.png](attachment:91325e74-eacc-479d-950e-f84bd64dee66:image.png)
-    
-    ![image.png](attachment:d127aad6-89ce-42a1-b3ca-a13bd62470c9:image.png)
+
     
 
 # 통합 정리 표
