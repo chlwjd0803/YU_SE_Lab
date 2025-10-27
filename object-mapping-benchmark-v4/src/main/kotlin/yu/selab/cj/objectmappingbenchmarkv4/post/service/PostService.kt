@@ -1,11 +1,15 @@
-package yu.selab.cj.objectmappingbenchmarkv1.post.service
+package yu.selab.cj.objectmappingbenchmarkv4.post.service
 
+import org.springframework.http.RequestEntity.post
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import yu.selab.cj.objectmappingbenchmarkv1.post.command.CreatePostDto
-import yu.selab.cj.objectmappingbenchmarkv1.post.command.ReadPostDto
-import yu.selab.cj.objectmappingbenchmarkv1.post.repository.PostRepository
-import yu.selab.cj.objectmappingbenchmarkv1.user.repository.UserRepository
+import yu.selab.cj.objectmappingbenchmarkv4.mapper.PostMapper
+import yu.selab.cj.objectmappingbenchmarkv4.post.command.CreatePostDto
+import yu.selab.cj.objectmappingbenchmarkv4.post.command.ReadPostDto
+import yu.selab.cj.objectmappingbenchmarkv4.post.repository.PostRepository
+import yu.selab.cj.objectmappingbenchmarkv4.user.repository.UserRepository
+import kotlin.collections.map
+
 
 @Service
 class PostService(
@@ -15,7 +19,8 @@ class PostService(
 
     @Transactional(readOnly = true)
     fun getPostList() = postRepository.findAll().map{
-        post -> ReadPostDto(null, null, null).fromEntity(post)
+//        post -> ReadPostDto(null, null, null).fromEntity(post)
+        post -> PostMapper.toDto(post)
     }
 
     @Transactional(readOnly = true)
@@ -24,7 +29,7 @@ class PostService(
             IllegalArgumentException("게시물 없음")
         }
 
-        return ReadPostDto(null, null, null).fromEntity(post)
+        return PostMapper.toDto(post)
     }
 
     @Transactional
@@ -32,7 +37,7 @@ class PostService(
         val user = userRepository.findById(dto.userId).orElseThrow {
             IllegalArgumentException("유저 없음")
         }
-        val post = dto.toEntity(user)
+        val post = PostMapper.toEntity(dto, user)
         postRepository.save(post)
 
 //        postRepository.save(Post(dto.title, dto.content, user))

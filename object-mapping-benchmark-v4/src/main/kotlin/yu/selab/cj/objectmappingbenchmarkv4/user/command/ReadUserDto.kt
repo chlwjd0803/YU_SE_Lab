@@ -1,7 +1,9 @@
-package yu.selab.cj.objectmappingbenchmarkv1.user.command
+package yu.selab.cj.objectmappingbenchmarkv4.user.command
 
-import yu.selab.cj.objectmappingbenchmarkv1.post.command.ReadPostDto
-import yu.selab.cj.objectmappingbenchmarkv1.user.entity.User
+
+import yu.selab.cj.objectmappingbenchmarkv4.post.command.ReadPostDto
+import yu.selab.cj.objectmappingbenchmarkv4.user.entity.User
+import kotlin.collections.map
 
 data class ReadUserDto(
     var userId : Long?,
