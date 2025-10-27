@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import yu.selab.cj.objectmappingbenchmarkv1.post.command.PostDto
+import yu.selab.cj.objectmappingbenchmarkv1.post.command.CreatePostDto
 import yu.selab.cj.objectmappingbenchmarkv1.post.service.PostService
 
 @RestController
@@ -24,7 +24,7 @@ class PostController(private val postService: PostService) {
         = ResponseEntity.ok().body(postService.getPost(id))
 
     @PostMapping
-    fun createPost(@RequestBody dto : PostDto)
+    fun createPost(@RequestBody dto : CreatePostDto)
         = ResponseEntity.ok().body(postService.createPost(dto))
 
     @DeleteMapping("/{id}")

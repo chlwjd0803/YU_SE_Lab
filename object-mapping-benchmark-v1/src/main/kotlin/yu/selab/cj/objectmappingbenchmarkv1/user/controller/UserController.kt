@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import yu.selab.cj.objectmappingbenchmarkv1.user.command.UserDto
+import yu.selab.cj.objectmappingbenchmarkv1.user.command.CreateUserDto
 import yu.selab.cj.objectmappingbenchmarkv1.user.service.UserService
 
 @RestController
@@ -26,7 +26,7 @@ class UserController(
         = ResponseEntity.ok().body(userService.getUser(id))
 
     @PostMapping
-    fun createUser(@RequestBody dto : UserDto)
+    fun createUser(@RequestBody dto : CreateUserDto)
         = ResponseEntity.ok().body(userService.createUser(dto))
 
     @DeleteMapping("/{id}")

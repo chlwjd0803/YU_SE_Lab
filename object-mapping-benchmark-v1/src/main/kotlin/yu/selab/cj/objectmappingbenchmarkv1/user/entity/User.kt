@@ -1,10 +1,13 @@
 package yu.selab.cj.objectmappingbenchmarkv1.user.entity
 
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
+import yu.selab.cj.objectmappingbenchmarkv1.post.entity.Post
 
 @Entity
 class User(
@@ -12,7 +15,10 @@ class User(
     val name : String,
 
     @Column
-    val password : String
+    val password : String,
+
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val posts : MutableList<Post> = mutableListOf()
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

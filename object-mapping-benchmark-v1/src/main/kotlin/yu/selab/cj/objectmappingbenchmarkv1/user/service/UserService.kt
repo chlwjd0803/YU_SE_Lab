@@ -1,8 +1,10 @@
 package yu.selab.cj.objectmappingbenchmarkv1.user.service
 
+
 import org.springframework.stereotype.Service
-import yu.selab.cj.objectmappingbenchmarkv1.user.command.UserDto
-import yu.selab.cj.objectmappingbenchmarkv1.user.entity.User
+import org.springframework.transaction.annotation.Transactional
+import yu.selab.cj.objectmappingbenchmarkv1.user.command.CreateUserDto
+import yu.selab.cj.objectmappingbenchmarkv1.user.command.ReadUserDto
 import yu.selab.cj.objectmappingbenchmarkv1.user.repository.UserRepository
 
 @Service
@@ -10,17 +12,27 @@ class UserService(
     private val userRepository : UserRepository
 ) {
 
-    fun getUserList() = userRepository.findAll()
-
-    fun getUser(id : Long) = userRepository.findById(id).orElseThrow {
-        IllegalArgumentException("user not found")
+    @Transactional(readOnly = true)
+    fun getUserList() = userRepository.findAll().map{
+        user -> ReadUserDto(null, null).fromEntity(user)
     }
 
-    fun createUser(dto : UserDto){
-        val user = User(dto.name, dto.password)
+    @Transactional(readOnly = true)
+    fun getUser(id : Long) : ReadUserDto {
+        val user = userRepository.findById(id).orElseThrow {
+            IllegalArgumentException("유저 없음")
+        }
+
+        return ReadUserDto(null, null).fromEntity(user)
+    }
+
+    @Transactional
+    fun createUser(dto : CreateUserDto){
+        val user = dto.toEntity()
         userRepository.save(user)
     }
 
+    @Transactional
     fun deleteUser(id : Long)
         = userRepository.deleteById(id)
 
