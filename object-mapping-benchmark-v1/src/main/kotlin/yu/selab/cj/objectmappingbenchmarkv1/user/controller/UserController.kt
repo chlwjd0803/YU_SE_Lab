@@ -1,4 +1,4 @@
-package yu.selab.cj.objectmappingbenchmarkv1.controller
+package yu.selab.cj.objectmappingbenchmarkv1.user.controller
 
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import yu.selab.cj.objectmappingbenchmarkv1.command.UserDto
-import yu.selab.cj.objectmappingbenchmarkv1.service.UserService
+import yu.selab.cj.objectmappingbenchmarkv1.user.command.UserDto
+import yu.selab.cj.objectmappingbenchmarkv1.user.service.UserService
 
 @RestController
 @RequestMapping("/users")

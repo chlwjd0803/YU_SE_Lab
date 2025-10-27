@@ -1,9 +1,9 @@
-package yu.selab.cj.objectmappingbenchmarkv1.service
+package yu.selab.cj.objectmappingbenchmarkv1.user.service
 
 import org.springframework.stereotype.Service
-import yu.selab.cj.objectmappingbenchmarkv1.command.UserDto
-import yu.selab.cj.objectmappingbenchmarkv1.entity.User
-import yu.selab.cj.objectmappingbenchmarkv1.entity.UserRepository
+import yu.selab.cj.objectmappingbenchmarkv1.user.command.UserDto
+import yu.selab.cj.objectmappingbenchmarkv1.user.entity.User
+import yu.selab.cj.objectmappingbenchmarkv1.user.repository.UserRepository
 
 @Service
 class UserService(

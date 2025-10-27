@@ -1,4 +1,4 @@
-package yu.selab.cj.objectmappingbenchmarkv1.entity
+package yu.selab.cj.objectmappingbenchmarkv1.user.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
