@@ -18,13 +18,6 @@ spring:
     restart:
       enabled: true
 
-logging:
-  level:
-    com.zaxxer.hikari.HikariConfig: WARN
-    com.zaxxer.hikari: WARN
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-
 # p6spy ?? (?? ?? ???)
 decorator:
   datasource:

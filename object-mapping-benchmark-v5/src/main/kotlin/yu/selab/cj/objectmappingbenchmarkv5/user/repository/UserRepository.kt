@@ -1,9 +1,9 @@
-package yu.selab.cj.objectmappingbenchmarkv4.user.repository
+package yu.selab.cj.objectmappingbenchmarkv5.user.repository
 
 import org.springframework.data.jpa.repository.EntityGraph
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
-import yu.selab.cj.objectmappingbenchmarkv4.user.entity.User
+import yu.selab.cj.objectmappingbenchmarkv5.user.entity.User
 import java.util.Optional
 
 @Repository
